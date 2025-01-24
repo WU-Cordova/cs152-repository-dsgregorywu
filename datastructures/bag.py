@@ -1,7 +1,5 @@
 from typing import Iterable, Optional
 from datastructures.ibag import IBag, T
-import random
-
 
 class Bag(IBag[T]):
     def __init__(self, *items: Optional[Iterable[T]]) -> None:
@@ -16,7 +14,6 @@ class Bag(IBag[T]):
             self._count[item] = 1
         elif item in self._contents():
             self._count(item) += 1
-
 
     def remove(self, item: T) -> None:
         raise NotImplementedError("remove method not implemented")
