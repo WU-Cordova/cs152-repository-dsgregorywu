@@ -7,28 +7,54 @@ class Bag(IBag[T]):
         self._count = {}
 
     def add(self, item: T) -> None:
-        if item == None:
-            raise TypeError("object none type.")
-        elif item not in self._contents():
-            self._contents.append(item)
-            self._count[item] = 1
-        elif item in self._contents():
-            self._count(item) += 1
+        if item != None:
+            if item not in self._count:
+                self._contents.append(item)
+                self._count[item] = int(1)
+            else: self._count[item] += 1
+        else: raise TypeError("object none type.")
+
 
     def remove(self, item: T) -> None:
-        raise NotImplementedError("remove method not implemented")
+        if item != None:
+            if item not in self._count:
+                raise ValueError("item not in bag")
+            else:
+                self._contents.remove(item)
+                self._count[item] -= 1
+                if self._count[item] == 0:
+                    self._count.pop[item]
+        else: raise ValueError("object type none")
+
 
     def count(self, item: T) -> int:
-        raise NotImplementedError("count method not implemented")
+        if item != None:
+            if item in self._count:
+                return self._count[item]
+            else: return 0
+        else: raise TypeError("object type none")
 
     def __len__(self) -> int:
-        raise NotImplementedError("__len__ method not implemented")
+        itemsinbag = int(0)
+        for item in self._count.keys():
+            itemcount = int(self._count[item])
+            itemsinbag += itemcount
+        return itemsinbag
+
 
     def distinct_items(self) -> int:
-        raise NotImplementedError("distinct_items method not implemented")
+        distitems = set()
+        for item in self._count.keys():
+            distitems.add(item)
+        return distitems
 
     def __contains__(self, item) -> bool:
-        raise NotImplementedError("__contains__ method not implemented")
+        if item == None:
+            raise TypeError("object none type")
+        if item in self._contents:
+            return True
+        else: return False
 
     def clear(self) -> None:
-        raise NotImplementedError("clear method not implemented")
+        self._contents = []
+        self._count = {}

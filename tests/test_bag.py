@@ -1,10 +1,7 @@
 import pytest
 
 from datastructures.bag import Bag
-from typing import Iterable, Optional
-from datastructures.ibag import IBag, T
-from abc import ABC, abstractmethod
-from typing import Optional, TypeVar, Generic, Iterable
+
 
 @pytest.fixture
 def bag():
@@ -15,6 +12,7 @@ def bag():
 def test_add_item_increases_count(bag: Bag[int]):
     """Test adding an item increases the count of items in the bag."""
     bag.add(1)
+    print(bag.count(1))
     assert bag.count(1) == 1
 
 
