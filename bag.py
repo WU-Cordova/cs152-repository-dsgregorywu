@@ -58,11 +58,3 @@ class Bag(IBag[T]):
     def clear(self) -> None:
         self._contents = []
         self._count = {}
-
-if __name__ == "__main__":
-    bag = Bag()
-    bag.add(8)
-    bag.add(8)
-    bag.add(9)
-    print(bag.distinct_items())
-    
