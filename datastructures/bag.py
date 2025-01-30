@@ -23,7 +23,7 @@ class Bag(IBag[T]):
                 self._contents.remove(item)
                 self._count[item] -= 1
                 if self._count[item] == 0:
-                    self._count.pop[item]
+                    self._count.pop(item)
         else: raise ValueError("object type none")
 
 
@@ -58,3 +58,7 @@ class Bag(IBag[T]):
     def clear(self) -> None:
         self._contents = []
         self._count = {}
+
+    def print_contents(self):
+        for item in self._contents:
+            print(item)
