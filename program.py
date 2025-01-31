@@ -57,7 +57,6 @@ class Blackjack():
         self._player_aces = sum(1 for card in self._player_hand if self._allcards[card] == 11)
         self._dealer_aces = sum(1 for card in self._dealer_hand if self._allcards[card] == 11)
         
-
     def play_again(self):
         """Asks the user if they want to play again."""
         while True:
@@ -97,6 +96,7 @@ class Blackjack():
 
     def double_down(self):
         """The player doubles down, doubling their bet and drawing one more card."""
+        print("")
         print("You chose to double down.")
         self._balance -= self._wager
         self._wager = self._wager * 2
@@ -244,7 +244,7 @@ class Blackjack():
         print("")
         if self._player_score == 21:
             self._player_blackjack = True
-            self.compare_scores
+            self.compare_scoress()
         if self._dealer_score == 21:
             self.compare_scores()
         while not self._busted and self._player_score <= 21:
