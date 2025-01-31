@@ -98,6 +98,7 @@ class Blackjack():
     def double_down(self):
         """The player doubles down, doubling their bet and drawing one more card."""
         print("You chose to double down.")
+        self._balance -= self._wager
         self._wager = self._wager * 2
         card = deck._contents[0]
         self._player_hand.append(card)
@@ -108,7 +109,6 @@ class Blackjack():
         drewstr += "]"
         print(drewstr)
         print("")
-        self.reveal_dealer()
         printstr = "Player's Hand: "
         for card in (self._player_hand):
             printstr += '['
@@ -195,7 +195,7 @@ class Blackjack():
         elif self._dbusted == True:
             print("The dealer busted. You win!")
             self._balance += int(self._wager * 2)
-        elif self._player_score == 21 and not self._dealer_score == 21 and self._player_blackjack == True:
+        elif self._player_score == 21 and self._dealer_score != 21 and self._player_blackjack == True:
             print("Blackjack! You win!")
             self._balance += int(self._wager + self._wager * 1.5)
         elif self._dealer_hand == 21 and not self._player_score == 21:
