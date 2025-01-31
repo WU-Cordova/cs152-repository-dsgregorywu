@@ -95,6 +95,41 @@ class Blackjack():
             print("")
             self.reveal_dealer()
 
+    def double_down(self):
+        """The player doubles down, doubling their bet and drawing one more card."""
+        print("You chose to double down.")
+        self._wager = self._wager * 2
+        card = deck._contents[0]
+        self._player_hand.append(card)
+        deck.remove(card)
+        self._player_score += int(cards[card[:-1]])
+        drewstr = str("You drew [")
+        drewstr += str(card)
+        drewstr += "]"
+        print(drewstr)
+        print("")
+        self.reveal_dealer()
+        printstr = "Player's Hand: "
+        for card in (self._player_hand):
+            printstr += '['
+            printstr += str(card) 
+            printstr += "] "
+        printstr += "| Score: "
+        printstr += str(self._player_score)
+        print(printstr)
+        if self._allcards[card] == 11:
+            self._player_aces += 1
+        self.adjust_for_aces()
+        if self._player_score > 21:
+            self._busted = True
+            self.compare_scores()
+        elif self._player_score == 21:
+            print("You got 21!")
+            print("")
+            self.reveal_dealer()
+        self.reveal_dealer()
+
+
     def stay(self):
         """The player decides to stay."""
         print("")
@@ -213,7 +248,7 @@ class Blackjack():
         if self._dealer_score == 21:
             self.compare_scores()
         while not self._busted and self._player_score <= 21:
-            response = input("Would you like to (H)it or (S)tay? ").strip().upper()
+            response = input("Would you like to (H)it, (S)tay, or (D)ouble down? ").strip().upper()
             if response == "H":
                 self.hit()
                 printstr = "Player's Hand: "
@@ -226,6 +261,9 @@ class Blackjack():
                 print(printstr)
             elif response == "S":
                 self.stay()
+                break
+            elif response == "D":
+                self.double_down()
                 break
             else:
                 print("Invalid response. Please type 'H' to Hit or 'S' to Stay.")
