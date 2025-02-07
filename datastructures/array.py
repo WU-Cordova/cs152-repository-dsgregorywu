@@ -130,5 +130,3 @@ class Array(IArray[T]):
     
 if __name__ == '__main__':
     myarray = Array[int](starting_sequence=[num for num in range(10)], data_type=int)
-    myarray.__reversed__()
-    print(myarray)
