@@ -36,6 +36,7 @@ class Array(IArray[T]):
     def __getitem__(self, index: slice) -> Sequence[T]: ...
 
     def __getitem__(self, index: int | slice) -> T | Sequence[T]:
+        if not isinstance(index, int): raise TypeError(f"Item {index} is not type int.")
         if isinstance(index, int):
             if not 0 <= index < self._element_count:
                 raise IndexError("Array index out of range")
@@ -133,4 +134,4 @@ class Array(IArray[T]):
     
 if __name__ == '__main__':
     myarray = Array[int](starting_sequence=[num for num in range(10)], data_type=int)
-    print(myarray["wnf"])
+    print(myarray[14:19])
