@@ -36,13 +36,17 @@ class Array(IArray[T]):
     def __getitem__(self, index: slice) -> Sequence[T]: ...
 
     def __getitem__(self, index: int | slice) -> T | Sequence[T]:
+        if not isinstance(index, int): raise TypeError(f"Item {index} is not type int.")
         if isinstance(index, int):
             if not 0 <= index < self._element_count:
                 raise IndexError("Array index out of range")
             return self._elements[index]
         else:  
             start, stop, step = index.indices(self._element_count)
-            return myarray([self._elements[i] for i in range(start, stop, step)], self._data_type)
+            returned = [self._elements[i] for i in range(start, stop, step)]
+            if returned == []:
+                raise TypeError(f"There are no items in this range.")
+            return [self._elements[i] for i in range(start, stop, step)]
     
     def __setitem__(self, index: int, item: T) -> None:
         if not 0 <= index < self._element_count: raise IndexError("Array index out of range")
@@ -130,3 +134,4 @@ class Array(IArray[T]):
     
 if __name__ == '__main__':
     myarray = Array[int](starting_sequence=[num for num in range(10)], data_type=int)
+    print(myarray[14:19])

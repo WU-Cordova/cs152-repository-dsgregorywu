@@ -42,7 +42,10 @@ class Array(IArray[T]):
             return self._elements[index]
         else:  
             start, stop, step = index.indices(self._element_count)
-            return myarray([self._elements[i] for i in range(start, stop, step)], self._data_type)
+            returned = [self._elements[i] for i in range(start, stop, step)]
+            if returned == []:
+                raise TypeError(f"There are no items in this range.")
+            return [self._elements[i] for i in range(start, stop, step)]
     
     def __setitem__(self, index: int, item: T) -> None:
         if not 0 <= index < self._element_count: raise IndexError("Array index out of range")
@@ -130,5 +133,4 @@ class Array(IArray[T]):
     
 if __name__ == '__main__':
     myarray = Array[int](starting_sequence=[num for num in range(10)], data_type=int)
-    myarray.__reversed__()
-    print(myarray)
+    print(myarray["wnf"])
