@@ -40,9 +40,11 @@ class Array(IArray[T]):
             if not 0 <= index < self._element_count:
                 raise IndexError("Array index out of range")
             return self._elements[index]
-        else:  
+        elif isinstance(index, slice):
             start, stop, step = index.indices(self._element_count)
             return [self._elements[i] for i in range(start, stop, step)]
+        else:
+            raise TypeError(f"Index must be int or slice, not {type(index).__name__}")
     
     def __setitem__(self, index: int, item: T) -> None:
         if not 0 <= index < self._element_count: raise IndexError("Array index out of range")
@@ -130,4 +132,4 @@ class Array(IArray[T]):
     
 if __name__ == '__main__':
     myarray = Array[int](starting_sequence=[num for num in range(10)], data_type=int)
-    print(myarray[14:19])
+    print(myarray["wnf"])
