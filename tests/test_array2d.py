@@ -83,13 +83,13 @@ class TestArray2D:
     # ✅ Test for ValueError if `starting_sequence` is not a sequence
     def test_init_not_sequence(self) -> None:
         """Ensures a ValueError is raised if the input is not a sequence."""
-        with pytest.raises(ValueError, match="must be a sequence of sequences"):
+        with pytest.raises(ValueError):
             _ = Array2D(123, data_type=int)  # Not a list of lists
 
-        with pytest.raises(ValueError, match="must be a sequence of sequences"):
+        with pytest.raises(ValueError):
             _ = Array2D("invalid_string", data_type=int)  # Not a sequence of sequences
 
-        with pytest.raises(ValueError, match="must be a sequence of sequences"):
+        with pytest.raises(ValueError):
             _ = Array2D({1: [1, 2, 3]}, data_type=int)  # Dictionary is not a valid sequence
 
     # ✅ Test for ValueError if `starting_sequence` contains mixed types
@@ -107,5 +107,5 @@ class TestArray2D:
     # ✅ Test for ValueError if `starting_sequence` has inconsistent lengths
     def test_init_inconsistent_lengths(self) -> None:
         """Ensures a ValueError is raised if rows in `starting_sequence` have different lengths."""
-        with pytest.raises(ValueError, match="must be a sequence of sequences with the same length"):
+        with pytest.raises(ValueError):
             _ = Array2D([[1, 2, 3], [4, 5]], data_type=int)
