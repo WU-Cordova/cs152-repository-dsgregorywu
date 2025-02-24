@@ -36,6 +36,7 @@ class Array(IArray[T]):
     def __getitem__(self, index: slice) -> Sequence[T]: ...
 
     def __getitem__(self, index: int | slice) -> T | Sequence[T]:
+        """Returns the value at a specific index or slice."""
         if isinstance(index, int):
             if not 0 <= index < self._element_count:
                 raise IndexError("Array index out of range")
@@ -47,11 +48,13 @@ class Array(IArray[T]):
             raise TypeError(f"Index must be int or slice, not {type(index).__name__}")
     
     def __setitem__(self, index: int, item: T) -> None:
+        """Sets the value at a certain index to the passed through value."""
         if not 0 <= index < self._element_count: raise IndexError("Array index out of range")
         if not isinstance(item, self._data_type): raise TypeError(f"Item {item} is not of type {self._data_type}")
         self._elements[index] = item
 
     def append(self, data: T) -> None:
+        """Adds the passed through value to the end of the array."""
         if not isinstance(data, self._data_type): raise TypeError(f"Item {data} is not of type {self._data_type}")
         if self._element_count >= self._capacity:
             self._capacity = self._capacity * 2
@@ -59,6 +62,7 @@ class Array(IArray[T]):
         self._element_count += 1
     
     def append_front(self, data: T) -> None:
+        """Adds the passed through value to the front of the array."""
         if not isinstance(data, self._data_type): raise TypeError(f"Item {data} is not of type {self._data_type}")
         if self._element_count >= self._capacity: self._resize(self._capacity * 2)
         for i in range(self._element_count, 0, -1): self._elements[i] = self._elements[i - 1]
@@ -66,11 +70,13 @@ class Array(IArray[T]):
         self._element_count += 1
 
     def pop(self) -> None:
+        """Removes and returns the value at the specified point in the array."""
         item = self._elements[self._element_count]
         myarray.__delitem__(self._element_count)
         return item
     
     def pop_front(self) -> None:
+        """Removes and returns the first value in the array."""
         item = self._elements[0]
         myarray.__delitem__(0)
         return item
@@ -80,6 +86,7 @@ class Array(IArray[T]):
         return self._element_count
 
     def __eq__(self, other: object) -> bool:
+        """Returns a boolean if 2 arrays are the same."""
         str1 = self.__str__()
         str2 = other.__str__()
         torf = False
@@ -88,14 +95,17 @@ class Array(IArray[T]):
         return torf
     
     def __iter__(self) -> Iterator[T]:
+        """Allows for iteration through the array."""
         for i in range(self._element_count):
             yield(self._elements[i])
 
     def __reversed__(self) -> Iterator[T]:
+        """Allows for iteration backwards through the array."""
         for i in range(self._element_count - 1, -1, -1):
             yield self._elements[i]
 
     def __delitem__(self, index: int) -> None:
+        """Deletes the item at a certain value and removes that index from the array."""
         if not isinstance(index, int): raise TypeError(f"Item {index} is not of type {self._data_type}")
         self._elements[index] = None
         pointer = 0
@@ -120,14 +130,17 @@ class Array(IArray[T]):
         return contains
 
     def clear(self) -> None:
+        """Clears the array."""
         self._element_count = 0
         self._capacity = 10  
         self._elements = np.empty(self._capacity, dtype=object)
 
     def __str__(self) -> str:
+        """Returns a string of each item within the array."""
         return '[' + ', '.join(str(item) for item in self) + ']'
     
     def __repr__(self) -> str:
+        """Represents the array in a readable way."""
         return f'Array {self.__str__()}, Logical: {self._element_count}, Physical: {len(self._elements)}, type: {self._data_type}'
     
 if __name__ == '__main__':
