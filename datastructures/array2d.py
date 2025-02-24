@@ -87,4 +87,4 @@ class Array2D(IArray2D[T]):
 
 if __name__ == "__main__":
     myarray = Array2D([[1, 2], [3, 4]])
-    print(myarray[1][9])
+    print(myarray[1][1])
