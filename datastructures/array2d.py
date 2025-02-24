@@ -10,7 +10,7 @@ class Array2D(IArray2D[T]):
 
     class Row(IArray2D.IRow[T]):
         def __init__(self, row_index: int, array: IArray, num_columns: int, data_type: type) -> None:
-            if not isinstance(): raise ValueError("The provided data container is not a sequence type.")
+            if not isinstance(data_type, type): raise ValueError("The provided data type is not a valid type.")
             self.row_index = row_index
             self.array = array
             self.num_columns = num_columns
@@ -58,7 +58,8 @@ class Array2D(IArray2D[T]):
         if any(not isinstance(item, data_type) for item in flattened):
             raise ValueError("All items must be of the same type")
         self.array2d = Array(flattened, data_type=data_type)
-                             
+
+    
     @staticmethod
     def empty(rows: int = 0, cols: int = 0, data_type: type = object) -> Array2D:
         starting_sequence = [[data_type() for _ in range(cols)] for _ in range(rows)]
@@ -85,5 +86,5 @@ class Array2D(IArray2D[T]):
         return f"Array2D {self.row_len} Rows x {self.column_len} Columns, items: {self}"
 
 if __name__ == "__main__":
-    myarray = Array2D({0:0, 1:1}, [3, 4])
+    myarray = Array2D([[1, 2], [3, 4]])
     print(myarray[1][1])
