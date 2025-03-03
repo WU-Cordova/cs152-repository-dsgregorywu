@@ -59,7 +59,6 @@ class Array2D(IArray2D[T]):
             raise ValueError("All items must be of the same type")
         self.array2d = Array(flattened, data_type=data_type)
 
-    
     @staticmethod
     def empty(rows: int = 0, cols: int = 0, data_type: type = object) -> Array2D:
         starting_sequence = [[data_type() for _ in range(cols)] for _ in range(rows)]
