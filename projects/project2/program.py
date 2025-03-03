@@ -3,7 +3,7 @@ import random
 import time
 import copy
 from datastructures.array2d import Array2D
-from kbhit import KBHit
+from projects.project2.kbhit import KBHit
 
 importedfile = "testfile.txt"
 
