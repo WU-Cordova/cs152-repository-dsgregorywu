@@ -69,10 +69,12 @@ class Array(IArray[T]):
         self._elements[0] = data
         self._element_count += 1
 
-    def pop(self) -> None:
-        """Removes and returns the value at the specified point in the array."""
-        item = self._elements[self._element_count]
-        myarray.__delitem__(self._element_count)
+    def pop(self) -> T:
+        """Removes and returns the value at the end of the array."""
+        if self._element_count == 0: raise IndexError("pop from empty array")
+        item = self._elements[self._element_count - 1]
+        self._elements[self._element_count - 1] = None
+        self._element_count -= 1
         return item
     
     def pop_front(self) -> None:

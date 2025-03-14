@@ -160,7 +160,7 @@ class GameController:
         if len(self.history) < 3:
             return False
         if self.history[-1].is_identical(self.history[-2]):
-            self.endmessage = "Stable pattern deteced. Simulation ended."
+            self.endmessage = "Stable pattern detected. Simulation ended."
             return True 
         if len(self.history) >= 3 and self.history[-1].is_identical(self.history[-3]):
             self.endmessage = "Repeating pattern detected. Simulation ended."
