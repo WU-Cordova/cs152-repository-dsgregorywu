@@ -77,7 +77,7 @@ class TestCircularQueue:
         q2 = CircularQueue(maxsize=5, data_type=int)
         for i in range(5):
             q1.enqueue(i)
-            
+
         for i in range(3):
             q2.enqueue(i)
             
