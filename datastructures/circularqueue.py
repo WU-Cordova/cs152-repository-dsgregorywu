@@ -176,4 +176,3 @@ class CircularQueue(IQueue[T]):
                 A string representation of the CircularQueue object
         '''
         return f'ArrayQueue({repr(self.circularqueue)})'
-                                  
