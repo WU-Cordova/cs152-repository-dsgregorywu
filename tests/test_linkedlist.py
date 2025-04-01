@@ -138,8 +138,8 @@ class TestLinkedList:
 
     def test_value_error_raised(self, linked_list: ILinkedList[int]) -> None:
         with pytest.raises(ValueError):
-            linked_list.insert_before(10, 99)  # Target not in list
+            linked_list.insert_before(10, 99)  
         with pytest.raises(ValueError):
-            linked_list.insert_after(10, 99)  # Target not in list
+            linked_list.insert_after(10, 99)  
         with pytest.raises(ValueError):
-            linked_list.remove(10)  # Item not in list
+            linked_list.remove(10) 

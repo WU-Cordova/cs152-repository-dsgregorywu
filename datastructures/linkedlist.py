@@ -26,8 +26,7 @@ class LinkedList[T](ILinkedList[T]):
         return linked_list
 
     def append(self, item: T) -> None:
-        if not isinstance(item, self.data_type):
-            raise TypeError(f"Item must be of type {self.data_type}")
+        if not isinstance(item, self.data_type): raise TypeError(f"Item must be of type {self.data_type}")
         new_node = LinkedList.Node(data=item)
         if self.tail is None:
             self.head = new_node
@@ -39,8 +38,7 @@ class LinkedList[T](ILinkedList[T]):
         self.count += 1
 
     def prepend(self, item: T) -> None:
-        if not isinstance(item, self.data_type):
-            raise TypeError(f"Item must be of type {self.data_type}")
+        if not isinstance(item, self.data_type): raise TypeError(f"Item must be of type {self.data_type}")
         new_node = LinkedList.Node(data=item)
         new_node.next = self.head
         if self.head:
@@ -53,13 +51,15 @@ class LinkedList[T](ILinkedList[T]):
     def insert_before(self, target: T, item: T) -> None:
         if not isinstance(item, self.data_type):
             raise TypeError(f"Item must be of type {self.data_type}")
+        if not isinstance(target, self.data_type):
+            raise TypeError(f"3 Target must be of type {self.data_type}")
         if self.head is None:
             raise ValueError("List is empty")
         current = self.head
         while current and current.data != target:
             current = current.next
         if current is None:
-            raise ValueError(f"Target {target} not found in the list")
+            raise ValueError(f"4 Target {target} not found in the list")
         new_node = LinkedList.Node(data=item)
         if current.previous is None:
             new_node.next = self.head
@@ -74,15 +74,13 @@ class LinkedList[T](ILinkedList[T]):
         self.count += 1
 
     def insert_after(self, target: T, item: T) -> None:
-        if not isinstance(item, self.data_type):
-            raise TypeError(f"Item must be of type {self.data_type}")
-        if self.head is None:
-            raise ValueError("List is empty")
+        if not isinstance(item, self.data_type): raise TypeError(f"Item must be of type {self.data_type}")
+        if not isinstance(target, self.data_type): raise TypeError(f"1 Target must be of type {self.data_type}")
+        if self.head is None: raise ValueError("List is empty")
         current = self.head
         while current and current.data != target:
             current = current.next
-        if current is None:
-            raise ValueError(f"Target {target} not found in the list")
+        if current is None: raise ValueError(f"2 Target {target} not found in the list")
         new_node = LinkedList.Node(data=item)
         new_node.previous = current
         new_node.next = current.next
@@ -94,13 +92,11 @@ class LinkedList[T](ILinkedList[T]):
         self.count += 1
 
     def remove(self, item: T) -> None:
-        if self.head is None:
-            raise ValueError("List is empty")
+        if self.head is None: raise ValueError("List is empty")
         current = self.head
         while current and current.data != item:
             current = current.next
-        if current is None:
-            raise ValueError(f"{item} not found in the list")
+        if current is None: raise ValueError(f"{item} not found in the list")
         if current.previous is None:
             self.head = current.next
             if self.head:
@@ -116,30 +112,32 @@ class LinkedList[T](ILinkedList[T]):
         self.count -= 1
 
     def remove_all(self, item: T) -> None:
-        if self.head is None:
-            raise ValueError("List is empty")
-        current = self.head
-        while current:
-            next_node = current.next
-            if current.data == item:
-                if current.previous is None:
-                    self.head = current.next
-                    if self.head:
-                        self.head.previous = None
-                else:
-                    current.previous.next = current.next
-                if current.next is None:
-                    self.tail = current.previous
-                    if self.tail:
-                        self.tail.next = None
-                else:
-                    current.next.previous = current.previous
-                self.count -= 1
-            current = next_node
+            if self.head is None: raise ValueError("List is empty")
+            current = self.head
+            removed = False
+            while current:
+                next_node = current.next
+                if current.data == item:
+                    if current.previous is None:
+                        self.head = current.next
+                        if self.head:
+                            self.head.previous = None
+                    else:
+                        current.previous.next = current.next
+                    if current.next is None:
+                        self.tail = current.previous
+                        if self.tail:
+                            self.tail.next = None
+                    else:
+                        current.next.previous = current.previous
+                    self.count -= 1
+                    removed = True
+                current = next_node
+            if not removed:
+                raise ValueError(f"{item} not found in the list")
 
     def pop(self) -> T:
-        if self.tail is None:
-            raise IndexError("Pop from empty list")
+        if self.tail is None: raise IndexError("Pop from empty list")
         data = self.tail.data
         self.tail = self.tail.previous
         if self.tail is not None:
@@ -150,8 +148,7 @@ class LinkedList[T](ILinkedList[T]):
         return data
 
     def pop_front(self) -> T:
-        if self.head is None:
-            raise IndexError("Pop from empty list")
+        if self.head is None: raise IndexError("Pop from empty list")
         data = self.head.data
         self.head = self.head.next
         if self.head is not None:
@@ -163,14 +160,12 @@ class LinkedList[T](ILinkedList[T]):
 
     @property
     def front(self) -> T:
-        if self.head is None:
-            raise IndexError("List is empty")
+        if self.head is None: raise IndexError("List is empty")
         return self.head.data
 
     @property
     def back(self) -> T:
-        if self.tail is None:
-            raise IndexError("List is empty")
+        if self.tail is None: raise IndexError("List is empty")
         return self.tail.data
 
     @property
