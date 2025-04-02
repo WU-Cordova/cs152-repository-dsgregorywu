@@ -92,49 +92,46 @@ class LinkedList[T](ILinkedList[T]):
         self.count += 1
 
     def remove(self, item: T) -> None:
+        if not isinstance(item, self.data_type): raise TypeError("Item is not of correct data type.")
         if self.head is None: raise ValueError("List is empty")
         current = self.head
-        while current and current.data != item:
-            current = current.next
+        while current and current.data != item: current = current.next
         if current is None: raise ValueError(f"{item} not found in the list")
         if current.previous is None:
             self.head = current.next
-            if self.head:
-                self.head.previous = None
-        else:
-            current.previous.next = current.next
+            if self.head: self.head.previous = None
+        else: current.previous.next = current.next
         if current.next is None:
             self.tail = current.previous
-            if self.tail:
-                self.tail.next = None
-        else:
-            current.next.previous = current.previous
+            if self.tail: self.tail.next = None
+        else: current.next.previous = current.previous
         self.count -= 1
 
     def remove_all(self, item: T) -> None:
-            if self.head is None: raise ValueError("List is empty")
-            current = self.head
-            removed = False
-            while current:
-                next_node = current.next
-                if current.data == item:
-                    if current.previous is None:
-                        self.head = current.next
-                        if self.head:
-                            self.head.previous = None
-                    else:
-                        current.previous.next = current.next
-                    if current.next is None:
-                        self.tail = current.previous
-                        if self.tail:
-                            self.tail.next = None
-                    else:
-                        current.next.previous = current.previous
-                    self.count -= 1
-                    removed = True
-                current = next_node
-            if not removed:
-                raise ValueError(f"{item} not found in the list")
+        if not isinstance(item, self.data_type): raise TypeError("Item is not of correct type.")
+        if self.head is None: raise ValueError("List is empty")
+        current = self.head
+        removed = False
+        while current:
+            next_node = current.next
+            if current.data == item:
+                if current.previous is None:
+                    self.head = current.next
+                    if self.head:
+                        self.head.previous = None
+                else:
+                    current.previous.next = current.next
+                if current.next is None:
+                    self.tail = current.previous
+                    if self.tail:
+                        self.tail.next = None
+                else:
+                    current.next.previous = current.previous
+                self.count -= 1
+                removed = True
+            current = next_node
+        if not removed:
+            raise ValueError(f"{item} not found in the list")
 
     def pop(self) -> T:
         if self.tail is None: raise IndexError("Pop from empty list")
