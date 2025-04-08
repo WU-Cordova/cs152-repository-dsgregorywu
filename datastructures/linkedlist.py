@@ -4,6 +4,7 @@ import os
 from typing import Optional, Sequence
 from datastructures.ilinkedlist import ILinkedList, T
 
+# Test? Does this work?
 class LinkedList[T](ILinkedList[T]):
 
     @dataclass
