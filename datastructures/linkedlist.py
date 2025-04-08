@@ -4,6 +4,7 @@ import os
 from typing import Optional, Sequence
 from datastructures.ilinkedlist import ILinkedList, T
 
+# Test? Does this work?
 class LinkedList[T](ILinkedList[T]):
 
     @dataclass
@@ -92,46 +93,46 @@ class LinkedList[T](ILinkedList[T]):
         self.count += 1
 
     def remove(self, item: T) -> None:
+        if not isinstance(item, self.data_type): raise TypeError("Item is not of correct data type.")
         if self.head is None: raise ValueError("List is empty")
         current = self.head
-        while current and current.data != item:
-            current = current.next
-        if current is None: raise TypeError(f"{item} not found in the list")
+        while current and current.data != item: current = current.next
+        if current is None: raise ValueError(f"{item} not found in the list")
         if current.previous is None:
             self.head = current.next
-            if self.head:
-                self.head.previous = None
-        else:
-            current.previous.next = current.next
+            if self.head: self.head.previous = None
+        else: current.previous.next = current.next
         if current.next is None:
             self.tail = current.previous
-            if self.tail:
-                self.tail.next = None
-        else:
-            current.next.previous = current.previous
+            if self.tail: self.tail.next = None
+        else: current.next.previous = current.previous
         self.count -= 1
 
-def remove_all(self, item: T) -> None:
-    if not isinstance(item, self.data_type): raise TypeError(f"Item must be of type {self.data_type}")
-    if self.head is None: raise ValueError("List is empty")
-    current = self.head
-    while current:
-        next_node = current.next
-        if current.data == item:
-            if current.previous is None:
-                self.head = current.next
-                if self.head:
-                    self.head.previous = None
-            else:
-                current.previous.next = current.next
-            if current.next is None:
-                self.tail = current.previous
-                if self.tail:
-                    self.tail.next = None
-            else:
-                current.next.previous = current.previous
-            self.count -= 1
-        current = next_node
+    def remove_all(self, item: T) -> None:
+        if not isinstance(item, self.data_type): raise TypeError("Item is not of correct type.")
+        if self.head is None: raise ValueError("List is empty")
+        current = self.head
+        removed = False
+        while current:
+            next_node = current.next
+            if current.data == item:
+                if current.previous is None:
+                    self.head = current.next
+                    if self.head:
+                        self.head.previous = None
+                else:
+                    current.previous.next = current.next
+                if current.next is None:
+                    self.tail = current.previous
+                    if self.tail:
+                        self.tail.next = None
+                else:
+                    current.next.previous = current.previous
+                self.count -= 1
+                removed = True
+            current = next_node
+        if not removed:
+            raise ValueError(f"{item} not found in the list")
 
     def pop(self) -> T:
         if self.tail is None: raise IndexError("Pop from empty list")
@@ -235,40 +236,3 @@ def remove_all(self, item: T) -> None:
 if __name__ == '__main__':
     filename = os.path.basename(__file__)
     print(f'OOPS!\nThis is the {filename} file.\nDid you mean to run your tests or program.py file?\nFor tests, run them from the Test Explorer on the left.')
-
-if __name__ == "__main__":
-    import pytest
-    from datastructures.linkedlist import LinkedList
-
-    linked_list = LinkedList[int].from_sequence([0, 1, 2, 3, 4], data_type=int)
-
-    try:
-        with pytest.raises(TypeError):
-            linked_list.append("string")
-        print("1")
-        with pytest.raises(TypeError):
-            linked_list.prepend("string")
-        print("2")
-        with pytest.raises(TypeError):
-            linked_list.insert_after(1, "string")
-        print("3")
-        with pytest.raises(TypeError):
-            linked_list.insert_before(1, "string")
-        print("4")
-        with pytest.raises(TypeError):
-            linked_list.insert_after("string", 2)
-        print("5")
-        with pytest.raises(TypeError):
-            linked_list.insert_before("string", 2)
-        print("6")
-        with pytest.raises(TypeError):
-            linked_list.remove("string")
-        print("7")
-        with pytest.raises(TypeError):
-            linked_list.remove_all("string")
-        print("8")
-        with pytest.raises(TypeError):
-            LinkedList.from_sequence([1, 2, 3], data_type=str)
-        print("All type assertion tests passed.")
-    except AssertionError as e:
-        print("A type assertion test failed:", e)
