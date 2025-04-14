@@ -20,8 +20,7 @@ class ListStack[T](Generic[T], IStack[T]):
 
         """
         self.stack = LinkedList(data_type=data_type)
-        self.data_type = data_type
-        raise NotImplementedError("ListStack.__init__ is not implemented.")
+        self.type = data_type
 
     def push(self, item: T):
         """
