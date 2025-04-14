@@ -133,8 +133,7 @@ class Deque[T](IQueue[T]):
         Returns:
             - bool: True if the item exists in the deque, False otherwise.
         """
-        contained = self.storage.contains(item)
-        return contained
+        return item in self.storage
     
     def __eq__(self, other) -> bool:
         """
@@ -146,6 +145,7 @@ class Deque[T](IQueue[T]):
         Returns:
             - bool: True if the deques are equal, False otherwise.
         """
+        if not isinstance(other, self): raise TypeError("Other is not of correct type.")
         bool2 = False
         if self.storage == other: bool2 = True
         return bool2
@@ -163,8 +163,12 @@ class Deque[T](IQueue[T]):
         Returns:
             - str: A string representation of the deque.
         """
-        
-        raise NotImplementedError("Method to get the string representation of the deque is not implemented.")
+        items = []
+        current = self.storage.head
+        while current:
+            items.append(repr(current.data))
+            current = current.next
+        return '[' + ', '.join(items) + ']'
     
     def __repr__(self) -> str:
         """
@@ -173,7 +177,12 @@ class Deque[T](IQueue[T]):
         Returns:
             - str: A detailed string representation of the deque.
         """
-        raise NotImplementedError("Method to get the detailed string representation of the deque is not implemented.")
+        items = []
+        current = self.storage.head
+        while current:
+            items.append(repr(current.data))
+            current = current.next
+        return f"Deque({' <-> '.join(items)}) Count: {self.storage.count}"
 
 
 if __name__ == '__main__':
