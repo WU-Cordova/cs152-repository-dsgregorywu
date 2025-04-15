@@ -1,235 +1,196 @@
-from __future__ import annotations
-from dataclasses import dataclass
 import os
-from typing import Optional, Sequence
-from datastructures.ilinkedlist import ILinkedList, T
+from datastructures.iqueue import IQueue
+from datastructures.linkedlist import LinkedList, T
+from typing import TypeVar
 
-class LinkedList[T](ILinkedList[T]):
+T = TypeVar('T')
 
-    @dataclass
-    class Node:
-        data: T
-        next: Optional[LinkedList.Node] = None
-        previous: Optional[LinkedList.Node] = None
+class Deque(IQueue[T]):
+    """
+    A double-ended queue (deque) implementation.
+    """
 
     def __init__(self, data_type: type = object) -> None:
-        self.head: Optional[LinkedList.Node] = None
-        self.tail: Optional[LinkedList.Node] = None
-        self.count: int = 0
-        self.data_type = data_type
+        """
+        Initializes the deque with a specified data type.
 
-    @staticmethod
-    def from_sequence(sequence: Sequence[T], data_type: type = object) -> LinkedList[T]:
-        linked_list = LinkedList(data_type=data_type)
-        for item in sequence:
-            linked_list.append(item)
-        return linked_list
+        Args:
+            - data_type (type): The type of data the deque will hold.
+        """
+        self.storage = LinkedList()
+        self.type = data_type
 
-    def append(self, item: T) -> None:
-        if not isinstance(item, self.data_type): raise TypeError(f"Item must be of type {self.data_type}")
-        new_node = LinkedList.Node(data=item)
-        if self.tail is None:
-            self.head = new_node
-            self.tail = new_node
-        else:
-            self.tail.next = new_node
-            new_node.previous = self.tail
-            self.tail = new_node
-        self.count += 1
+    def enqueue(self, item: T) -> None:
+        """
+        Adds an item to the back of the deque.
 
-    def prepend(self, item: T) -> None:
-        if not isinstance(item, self.data_type): raise TypeError(f"Item must be of type {self.data_type}")
-        new_node = LinkedList.Node(data=item)
-        new_node.next = self.head
-        if self.head:
-            self.head.previous = new_node
-        self.head = new_node
-        if self.tail is None:
-            self.tail = new_node
-        self.count += 1
+        Args:
+            - item (T): The item to add to the back of the deque.
 
-    def insert_before(self, target: T, item: T) -> None:
-        if not isinstance(item, self.data_type):
-            raise TypeError(f"Item must be of type {self.data_type}")
-        if not isinstance(target, self.data_type):
-            raise TypeError(f"3 Target must be of type {self.data_type}")
-        if self.head is None:
-            raise ValueError("List is empty")
-        current = self.head
-        while current and current.data != target:
-            current = current.next
-        if current is None:
-            raise ValueError(f"4 Target {target} not found in the list")
-        new_node = LinkedList.Node(data=item)
-        if current.previous is None:
-            new_node.next = self.head
-            self.head.previous = new_node
-            self.head = new_node
-        else:
-            previous_node = current.previous
-            previous_node.next = new_node
-            new_node.previous = previous_node
-            new_node.next = current
-            current.previous = new_node
-        self.count += 1
+        Raises:
+            - TypeError: If the item is not of the correct type.
+        """
+        if not isinstance(item, self.type): raise TypeError("Item is not of correct type.")
+        self.storage.append(item)
 
-    def insert_after(self, target: T, item: T) -> None:
-        if not isinstance(item, self.data_type): raise TypeError(f"Item must be of type {self.data_type}")
-        if not isinstance(target, self.data_type): raise TypeError(f"1 Target must be of type {self.data_type}")
-        if self.head is None: raise ValueError("List is empty")
-        current = self.head
-        while current and current.data != target:
-            current = current.next
-        if current is None: raise ValueError(f"2 Target {target} not found in the list")
-        new_node = LinkedList.Node(data=item)
-        new_node.previous = current
-        new_node.next = current.next
-        if current.next is not None:
-            current.next.previous = new_node
-        else:
-            self.tail = new_node
-        current.next = new_node
-        self.count += 1
+    def dequeue(self) -> T:
+        """
+        Removes and returns the item from the front of the deque.
 
-    def remove(self, item: T) -> None:
-        if self.head is None: raise ValueError("List is empty")
-        current = self.head
-        while current and current.data != item:
-            current = current.next
-        if current is None: raise TypeError(f"{item} not found in the list")
-        if current.previous is None:
-            self.head = current.next
-            if self.head:
-                self.head.previous = None
-        else:
-            current.previous.next = current.next
-        if current.next is None:
-            self.tail = current.previous
-            if self.tail:
-                self.tail.next = None
-        else:
-            current.next.previous = current.previous
-        self.count -= 1
+        Returns:
+            - T: The item removed from the front of the deque.
 
-def remove_all(self, item: T) -> None:
-    if not isinstance(item, self.data_type): raise TypeError(f"Item must be of type {self.data_type}")
-    if self.head is None: raise ValueError("List is empty")
-    current = self.head
-    while current:
-        next_node = current.next
-        if current.data == item:
-            if current.previous is None:
-                self.head = current.next
-                if self.head:
-                    self.head.previous = None
-            else:
-                current.previous.next = current.next
-            if current.next is None:
-                self.tail = current.previous
-                if self.tail:
-                    self.tail.next = None
-            else:
-                current.next.previous = current.previous
-            self.count -= 1
-        current = next_node
+        Raises:
+            - IndexError: If the deque is empty.
+        """
+        if len(self.storage) == 0: raise IndexError("Deque is empty.")
+        popped = self.storage.pop_front()
+        return popped
 
-    def pop(self) -> T:
-        if self.tail is None: raise IndexError("Pop from empty list")
-        data = self.tail.data
-        self.tail = self.tail.previous
-        if self.tail is not None:
-            self.tail.next = None
-        else:
-            self.head = None
-        self.count -= 1
-        return data
+    def enqueue_front(self, item: T) -> None:
+        """
+        Adds an item to the front of the deque.
 
-    def pop_front(self) -> T:
-        if self.head is None: raise IndexError("Pop from empty list")
-        data = self.head.data
-        self.head = self.head.next
-        if self.head is not None:
-            self.head.previous = None
-        else:
-            self.tail = None
-        self.count -= 1
-        return data
+        Args:
+            - item (T): The item to add to the front of the deque.
 
-    @property
+        Raises:
+            - TypeError: If the item is not of the correct type.
+        """
+        if not isinstance(item, self.type): raise TypeError("Item is not of correct type.")
+        self.storage.prepend(item)
+
+    def dequeue_back(self) -> T:
+        """
+        Removes and returns the item from the back of the deque.
+
+        Returns:
+            - T: The item removed from the back of the deque.
+
+        Raises:
+            - IndexError: If the deque is empty.
+        """
+        if len(self.storage) == 0: raise IndexError("Deque is empty.")
+        popped = self.storage.pop()
+        return popped
+
     def front(self) -> T:
-        if self.head is None: raise IndexError("List is empty")
-        return self.head.data
+        """
+        Returns the front item of the deque without removing it.
 
-    @property
+        Returns:
+            - T: The front item of the deque.
+
+        Raises:
+            - IndexError: If the deque is empty.
+        """
+        if len(self.storage) == 0: raise IndexError("Deque is empty.")
+        head = self.storage.front()
+        return head
+
     def back(self) -> T:
-        if self.tail is None: raise IndexError("List is empty")
-        return self.tail.data
+        """
+        Returns the back item of the deque without removing it.
 
-    @property
+        Returns:
+            - T: The back item of the deque.
+
+        Raises:
+            - IndexError: If the deque is empty.
+        """
+        if len(self.storage) == 0:raise IndexError("Deque is empty.")
+        backitem = self.storage.back()    
+        if callable(self.type):
+            backitem = self.type(backitem)
+        return backitem
+    
     def empty(self) -> bool:
-        return self.head is None
+        """
+        Checks if the deque is empty.
+
+        Returns:
+            - bool: True if the deque is empty, False otherwise.
+        """
+        bool1 = True
+        if len(self.storage) == 0: bool1 = False
+        return bool1
 
     def __len__(self) -> int:
-        return self.count
+        """
+        Returns the number of items in the deque.
 
-    def clear(self) -> None:
-        self.head = None
-        self.tail = None
-        self.count = 0
-
+        Returns:
+            - int: The number of items in the deque.
+        """
+        length = len(self.storage)
+        return length
+    
     def __contains__(self, item: T) -> bool:
-        current = self.head
-        while current:
-            if current.data == item:
-                return True
-            current = current.next
-        return False
+        """
+        Checks if an item exists in the deque.
 
-    def __iter__(self) -> LinkedList[T]:
-        self._current = self.head
-        return self
+        Args:
+            - item (T): The item to check for existence.
 
-    def __next__(self) -> T:
-        if self._current is None:
-            raise StopIteration
-        data = self._current.data
-        self._current = self._current.next
-        return data
+        Returns:
+            - bool: True if the item exists in the deque, False otherwise.
+        """
+        return item in self.storage
+    
+    def __eq__(self, other) -> bool:
+        """
+        Compares two deques for equality.
 
-    def __reversed__(self):
-        current = self.tail
-        while current:
-            yield current.data
-            current = current.previous
+        Args:
+            - other (Deque): The deque to compare with.
 
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, LinkedList):
-            return False
-        if len(self) != len(other):
-            return False
-        current_self = self.head
-        current_other = other.head
-        while current_self and current_other:
-            if current_self.data != current_other.data:
-                return False
-            current_self = current_self.next
-            current_other = current_other.next
-        return True
+        Returns:
+            - bool: True if the deques are equal, False otherwise.
+        """
+        if not isinstance(other, Deque): raise TypeError("Other is not a Deque.")
+        return self.storage == other.storage  
+
+    def clear(self):
+        """
+        Clears all items from the deque.
+        """
+        self.storage.clear()
 
     def __str__(self) -> str:
+        """
+        Returns a string representation of the deque.
+
+        Returns:
+            - str: A string representation of the deque.
+        """
         items = []
-        current = self.head
+        current = self.storage.head
         while current:
             items.append(repr(current.data))
             current = current.next
         return '[' + ', '.join(items) + ']'
-
+    
     def __repr__(self) -> str:
+        """
+        Returns a detailed string representation of the deque.
+
+        Returns:
+            - str: A detailed string representation of the deque.
+        """
         items = []
-        current = self.head
+        current = self.storage.head
         while current:
             items.append(repr(current.data))
             current = current.next
-        return f"LinkedList({' <-> '.join(items)}) Count: {self.count}"
+        return f"Deque({' <-> '.join(items)}) Count: {self.storage.count}"
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
+    empty_deque = Deque[int](data_type=int)
+    populated_deque = Deque[int](data_type=int)
+    for i in range(5):
+            populated_deque.enqueue(i)
+    empty_deque.enqueue(10)
+    print(len(empty_deque))
+    print(empty_deque.back)
+    assert empty_deque.back() == 10

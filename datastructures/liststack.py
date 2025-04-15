@@ -2,9 +2,9 @@ import os
 from datastructures.istack import IStack
 from typing import Generic
 
-from datastructures.linkedlist import LinkedList
+from datastructures.linkedlist import LinkedList, T
 
-class ListStack[T](Generic[T], IStack[T]):
+class ListStack(Generic[T], IStack[T]):
     """
     ListStack (LinkedList-based Stack)
 
@@ -61,8 +61,8 @@ class ListStack[T](Generic[T], IStack[T]):
             IndexError: If the stack is empty.
         """
         if len(self.stack) == 0: raise IndexError("Stack is empty.")
-        peeked = self.stack.front()
-        return peeked
+        item = self.stack.front
+        return item
 
     @property
     def empty(self) -> bool:
@@ -106,9 +106,8 @@ class ListStack[T](Generic[T], IStack[T]):
             bool: True if the stacks are equal, False otherwise.
 
         """
-        if not isinstance(other, self.stack): raise TypeError("Other is not of correct type.")
-        if self.stack == other: return True
-        else: return False
+        if not isinstance(other, ListStack): raise TypeError("Other is not a ListStack.")
+        return self.stack == other.stack
 
     def __len__(self) -> int:
         """

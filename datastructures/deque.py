@@ -1,11 +1,11 @@
 import os
 from datastructures.iqueue import IQueue
-from datastructures.linkedlist import LinkedList
+from datastructures.linkedlist import LinkedList, T
 from typing import TypeVar
 
 T = TypeVar('T')
 
-class Deque[T](IQueue[T]):
+class Deque(IQueue[T]):
     """
     A double-ended queue (deque) implementation.
     """
@@ -17,8 +17,8 @@ class Deque[T](IQueue[T]):
         Args:
             - data_type (type): The type of data the deque will hold.
         """
-        self.storage = LinkedList()
         self.type = data_type
+        self.storage = LinkedList(data_type=self.type)
 
     def enqueue(self, item: T) -> None:
         """
@@ -85,7 +85,7 @@ class Deque[T](IQueue[T]):
             - IndexError: If the deque is empty.
         """
         if len(self.storage) == 0: raise IndexError("Deque is empty.")
-        head = self.storage.front()
+        head = self.storage.front
         return head
 
     def back(self) -> T:
@@ -99,8 +99,10 @@ class Deque[T](IQueue[T]):
             - IndexError: If the deque is empty.
         """
         if len(self.storage) == 0: raise IndexError("Deque is empty.")
-        tail = self.storage.front()
-        return tail
+        backitem = self.storage.back    
+        if callable(self.type):
+            backitem = self.type(backitem)
+        return backitem
 
     def empty(self) -> bool:
         """
@@ -109,9 +111,10 @@ class Deque[T](IQueue[T]):
         Returns:
             - bool: True if the deque is empty, False otherwise.
         """
-        bool1 = True
-        if len(self.storage) == 0: bool1 = False
+        bool1 = False
+        if len(self.storage) == 0: bool1 = True
         return bool1
+
 
     def __len__(self) -> int:
         """
@@ -120,8 +123,7 @@ class Deque[T](IQueue[T]):
         Returns:
             - int: The number of items in the deque.
         """
-        length = len(self.storage)
-        return length
+        return len(self.storage)
     
     def __contains__(self, item: T) -> bool:
         """
@@ -145,7 +147,8 @@ class Deque[T](IQueue[T]):
         Returns:
             - bool: True if the deques are equal, False otherwise.
         """
-        if not isinstance(other, Deque): raise TypeError("Other is not a Deque.")
+        if not isinstance(other, Deque): 
+            return False
         return self.storage == other.storage  
 
     def clear(self):
