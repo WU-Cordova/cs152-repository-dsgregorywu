@@ -145,10 +145,8 @@ class Deque[T](IQueue[T]):
         Returns:
             - bool: True if the deques are equal, False otherwise.
         """
-        if not isinstance(other, self): raise TypeError("Other is not of correct type.")
-        bool2 = False
-        if self.storage == other: bool2 = True
-        return bool2
+        if not isinstance(other, Deque): raise TypeError("Other is not a Deque.")
+        return self.storage == other.storage  
 
     def clear(self):
         """
