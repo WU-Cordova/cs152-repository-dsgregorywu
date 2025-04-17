@@ -37,11 +37,6 @@ class Snack:
         else:
             raise IndexError("Item not available.")
 
-class OrderItem:
-    """A drink with a customization."""
-    def __init__(self, message):
-        self.message = str()
-
 class CustomerOrder:
     """A customer's order, including name, price, and each item ordered"""
     def __init__(self, name, bistro_system):
@@ -107,8 +102,6 @@ class CustomerOrder:
     def order_drink(self):
         self.newdrink = Drink(self.bistro_system)
         self.bistro_system.print_numbered_menu({"Bases": self.bistro_system.bases})
-        newscreen = Menu("Bases", self.bistro_system)
-        self.drinkscreens.push(newscreen)
         looping = True
         while looping:
             drink_choice = input("Please select a base by number.").strip()
@@ -118,7 +111,6 @@ class CustomerOrder:
             elif drink_choice.upper() == "B": 
                 print("Exiting the menu.")
                 self.bistro_system.homescreen()
-                newscreen.clear()
             elif drink_choice.isdigit():
                 index = int(drink_choice) - 1
                 if 0 <= index < len(self.bistro_system.bases):
@@ -151,9 +143,6 @@ class CustomerOrder:
 
 
     def choose_fflavors(self):
-        newscreen = Menu("Fruity Flavors", self.bistro_system)
-        self.drinkscreens.push(newscreen)
-        newscreen.menu_name = "Fruity Flavors"
         self.bistro_system.print_numbered_menu({"Fruity Flavors": self.bistro_system.fflavors})
         looping = True
         while looping:
@@ -231,11 +220,7 @@ class CustomerOrder:
             if response.upper() == "Y":
                 self.choose_sflavors()
         
-
     def choose_milk(self):
-        newscreen = Menu("Milks", self.bistro_system)
-        self.drinkscreens.push(newscreen)
-        newscreen.menu_name = "Milks"
         self.bistro_system.print_numbered_menu({"Milks": self.bistro_system.milk})
         looping = True
         while looping:
@@ -257,9 +242,6 @@ class CustomerOrder:
         print("    ")
 
     def choose_addons(self):
-        newscreen = Menu("Add Ons", self.bistro_system)
-        self.drinkscreens.push(newscreen)
-        newscreen.menu_name = "Add Ons"
         self.bistro_system.print_numbered_menu({"Add Ons": self.bistro_system.addons})
         looping = True
         while looping:
@@ -296,9 +278,6 @@ class CustomerOrder:
             print(" ")
 
     def choose_tea(self):
-        newscreen = Menu("Teas", self.bistro_system)
-        self.drinkscreens.push(newscreen)
-        newscreen.menu_name = "Teas"
         self.bistro_system.print_numbered_menu({"Teas": self.bistro_system.teas})
         looping = True
         while looping:
@@ -319,9 +298,6 @@ class CustomerOrder:
         print("   ")
 
     def choose_espresso(self):
-        newscreen = Menu("Espresso Drinks", self.bistro_system)
-        self.drinkscreens.push(newscreen)
-        newscreen.menu_name = "Espresso Drinks"
         self.bistro_system.print_numbered_menu({"Espresso Drinks": self.bistro_system.espressodrinks})
         looping = True
         while looping:
@@ -347,9 +323,6 @@ class CustomerOrder:
         print("  ")
 
     def choose_drip(self):
-        newscreen = Menu("Drip Options", self.bistro_system)
-        self.drinkscreens.push(newscreen)
-        newscreen.menu_name = "Drip Options"
         self.bistro_system.print_numbered_menu({"Drip Options": self.bistro_system.dripoptions})
         looping = True
         while looping:
@@ -371,9 +344,6 @@ class CustomerOrder:
         print("   ")
 
     def choose_noncoffee(self):
-        newscreen = Menu("Non Coffee", self.bistro_system)
-        self.drinkscreens.push(newscreen)
-        newscreen.menu_name = "Non Coffee"
         self.bistro_system.print_numbered_menu({"Non Coffee": self.bistro_system.noncoffee})
         looping = True
         while looping:
