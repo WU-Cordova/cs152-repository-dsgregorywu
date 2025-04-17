@@ -33,7 +33,7 @@ class Drink:
 
     def display_drink(self):
         self.drinkstr = self.size
-        if self.temp:
+        if self.temp and self.base != "Redbull" and self.base != "Lemonade" and self.base != "Tea":
             self.drinkstr += f" {self.temp}"
         for flavor_list in [self.fflavors, self.sflavors]:
             if flavor_list:
@@ -54,7 +54,7 @@ class Drink:
         if self.milk or self.addons:
             self.drinkstr += " with "
             milk_addons = []
-            if self.milk:
+            if self.base == "Espresso" and self.milk:
                 milk_addons.append(self.milk + " Milk")
             milk_addons += [str(addon) for addon in self.addons]
             if milk_addons:
@@ -246,31 +246,42 @@ class CustomerOrder:
         if self.drinkscreens.empty:
             print("No previous menu to return to.")
             return
-        screen = self.drinkscreens.pop()
+        try:
+            screen = self.drinkscreens.pop()
+        except IndexError:
+            print("Error: Tried to pop from an empty stack.")
+            return
         if screen.menu_name == "Fruity Flavors":
             if self.newdrink.fflavors != []:
                 removed_item = self.newdrink.fflavors.pop()
                 print(f"Removing last fruity flavor choice: {removed_item}")
+                self.newdrink.cost -= .5
             self.choose_fflavors()
         elif screen.menu_name == "Savory Flavors":
             if self.newdrink.sflavors != []:
                 removed_item = self.newdrink.sflavors.pop()
                 print(f"Removing last savory flavor choice: {removed_item}")
+                self.newdrink.cost -= .5
             self.choose_sflavors()
         elif screen.menu_name == "Add Ons":
             if self.newdrink.addons != []:
                 removed_item = self.newdrink.addons.pop()
+                self.newdrink.cost -= float(self.bistro_system.addons[removed_item])
                 print(f"Removing last addon choice: {removed_item}")
             self.choose_addons()
         elif screen.menu_name == "Milks":
             if self.newdrink.milk:
+                removed_item = self.newdrink.milk
                 print(f"Removing milk choice: {self.newdrink.milk}")
                 self.newdrink.milk = ""
-                self.choose_milk()
+                self.newdrink.cost -= float(self.bistro_system.milk[removed_item])
+            self.choose_milk()
         elif screen.menu_name == "Espresso Drinks":
             if self.newdrink.espressodrink:
+                removed_item = self.newdrink.espressodrink
                 print(f"Removing Drink Choice {self.newdrink.espressodrink}")
                 self.newdrink.espressodrink = ""
+                self.newdrink.cost -= float(self.bistro_system.espressodrinks[removed_item])
                 self.choose_espresso()
         elif screen.menu_name == "Teas":
             if self.newdrink.teas:
@@ -279,19 +290,37 @@ class CustomerOrder:
                 self.choose_tea()
         elif screen.menu_name == "Non Coffee":
             if self.newdrink.noncoffee:
+                removed_item = self.newdrink.noncoffee
                 print(f"Removing Drink Choice {self.newdrink.noncoffee}")
                 self.newdrink.noncoffee = ""
+                self.newdrink.cost -= float(self.bistro_system.noncoffee[removed_item])
                 self.choose_noncoffee()
         elif screen.menu_name == "Bases":
             if self.newdrink.base:
+                removed_item = self.newdrink.base
                 print(f"Removing Base Choice {self.newdrink.base}")
                 self.newdrink.base = ""
+                self.newdrink.cost -= float(self.bistro_system.bases[removed_item])
                 self.choose_base()
         elif screen.menu_name == "Drip Options":
             if self.newdrink.dripdrink:
                 print(f"Removing Drink Choice {self.newdrink.dripdrink}")
+                self.newdrink.cost -= float(self.bistro_system.dripoptions[removed_item])
                 self.newdrink.dripdrink = ""
                 self.choose_drip()
+        elif screen.menu_name == "Temperatures":
+            if self.newdrink.temp:
+                print(f"Removing Temperature Choice {self.newdrink.temp}")
+                self.newdrink.temp = ""
+                self.choose_temp()
+        elif screen.menu_name == "Sizes":
+            if self.newdrink.size:
+                removed_item = self.newdrink.size
+                print(f"Removing Size Choice {self.newdrink.size}")
+                self.newdrink.cost -= float(self.bistro_system.sizes[removed_item])
+                self.newdrink.size = ""
+                self.choose_size()
+
 
     def choose_fflavors(self):
         looping = True
@@ -695,21 +724,24 @@ class BistroSystem:
         print("5. View End of Day Report")
         print("6. Exit")
         print("    ")
-        response = input("Please select an option. ")
-        if response == "1":
-            self.display_menu()
-        elif response == "2":
-            print(" ")
-            self.begin_order()
-        elif response == "3":
-            self.view_orders()
-        elif response == "4":
-            self.mark_order_as_complete()
-        elif response == "5":
-            self.view_report()
-        elif response == "6":
-            print("Exiting Bearcat Bistro.")
-            sys.exit()
+        looping = True
+        while looping:
+            response = input("Please select an option. ")
+            if response == "1":
+                self.display_menu()
+            elif response == "2":
+                print(" ")
+                self.begin_order()
+            elif response == "3":
+                self.view_orders()
+            elif response == "4":
+                self.mark_order_as_complete()
+            elif response == "5":
+                self.view_report()
+            elif response == "6":
+                print("Exiting Bearcat Bistro.")
+                sys.exit()
+            else: print("Invalid response. Please try again.")
 
     def print_menu(self, menu):
         for category, items in menu.items():
@@ -755,7 +787,8 @@ class BistroSystem:
         ordercompleted = self.orders.dequeue()
         print(f"Order Up for {ordercompleted.name}!")
         for item in ordercompleted.items:
-            print(item.name)
+            if type(item) == Snack: print(item.name)
+            elif type(item) == Drink: print(item.drinkstr)
         self.homescreen()
 
     def print_numbered_menu(self, menu):
