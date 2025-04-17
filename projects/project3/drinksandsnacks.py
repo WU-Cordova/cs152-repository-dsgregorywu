@@ -1,8 +1,8 @@
 import sys
 from datastructures.liststack import ListStack
 from datastructures.deque import Deque
-from bistrosystem import BistroSystem
-from customerorder import CustomerOrder
+from projects.project3.program import BistroSystem
+from projects.project3.customerorder import CustomerOrder
 
 class Menu:
     def __init__(self, menu_name, bistro_system):
