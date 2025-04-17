@@ -1,10 +1,3 @@
-README.md in your project3 folder with:
-Data structure choices for each component (Menu, Customer Order, Order Confirmation, Open Orders Queue, Completed Orders), and justifications for your choices. Your justifications should include complexity analysis and trade-offs.
-Instructions to run the program.
-Sample run(s) as screenshot(s) or pasted output.
-Any known bugs or limitations.
-What you’d add next if you had more time.
-
 This is my Bearcat Bistro Project!
 Some Data Structure choices I made:
 - For menus, I used a series of lists and dictionaries with prices on them. I used these because it was a good way of being able to easily access and iterate through each menu while also having a designated price. A linkedlist might've been better for complexity since I'm not ever changing the size of these menus, but linkedlists don't interact as well with dictionaries.
