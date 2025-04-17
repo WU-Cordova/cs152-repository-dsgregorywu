@@ -347,3 +347,358 @@ Welcome to the Bearcat Bistro, Derec!
     
 Please select an option. 6
 Exiting Bearcat Bistro.
+
+
+- After Debugging Phase 1, I removed all of the glaring issues that I could find, this being issues with the back function where it didn't accurately subtract the cost of certain items, as well as refining what prints during the display_drink function based on the base of the drink if the user used the back function. I also had an issue where drink names weren't listed when orders were marked as complete, but I got that fixed.
+- Some things I still would like to fix/change: When the price ends in .x0, it doesn't show the zero. This is likely a simple change, I just haven't gotten around to it. Also, I would like to add more character to the UI to make it seem more coffee shop-esque.
+
+An updated run though of the program:
+
+Welcome, Bearcat Bistro Employee! Please Enter Your Username: Derec
+Please enter your password: CS152
+Welcome to the Bearcat Bistro, Derec!
+    
+1. Display Menu
+2. Take New Order
+3. View Open Orders
+4. Mark Order as Complete
+5. View End of Day Report
+6. Exit
+    
+Please select an option. 2
+ 
+What name would you like to use for your order? Derec
+ 
+Would you like a (D)rink or (S)nack? D
+    
+Bases
+  1. Drip
+  2. Espresso
+  3. Lemonade
+  4. Redbull
+  5. Tea
+
+Please select a base. 4
+You chose: Redbull
+ 
+Fruity Flavors
+  1. Blackberry
+  2. Blueberry
+  3. Blue Raspberry
+  4. Grape
+  5. Grapefruit
+  6. Lavender
+  7. Lime
+  8. Mango
+  9. Passionfruit
+  10. Peach
+  11. Pear
+  12. Pomegranate
+  13. Pineapple
+  14. Raspberry
+  15. Strawberry
+  16. Watermelon
+
+Which flavor would you like? 11
+You chose Pear.
+  
+Would you like to add another flavor? N
+Add Ons
+  1. Cold Foam
+  2. Espresso Shot
+  3. Whipped Cream
+
+Would you like an Add On? Press N for None. b
+Removing last fruity flavor choice: Pear
+Fruity Flavors
+  1. Blackberry
+  2. Blueberry
+  3. Blue Raspberry
+  4. Grape
+  5. Grapefruit
+  6. Lavender
+  7. Lime
+  8. Mango
+  9. Passionfruit
+  10. Peach
+  11. Pear
+  12. Pomegranate
+  13. Pineapple
+  14. Raspberry
+  15. Strawberry
+  16. Watermelon
+
+Which flavor would you like? 13
+You chose Pineapple.
+  
+Would you like to add another flavor? Y
+Fruity Flavors
+  1. Blackberry
+  2. Blueberry
+  3. Blue Raspberry
+  4. Grape
+  5. Grapefruit
+  6. Lavender
+  7. Lime
+  8. Mango
+  9. Passionfruit
+  10. Peach
+  11. Pear
+  12. Pomegranate
+  13. Pineapple
+  14. Raspberry
+  15. Strawberry
+  16. Watermelon
+
+Which flavor would you like? 9
+You chose Passionfruit.
+  
+Would you like to add another flavor? N
+Add Ons
+  1. Cold Foam
+  2. Espresso Shot
+  3. Whipped Cream
+
+Would you like an Add On? Press N for None. 3
+You chose Whipped Cream.
+Would you like to add another Add On? N
+ 
+Sizes
+  1. Small
+  2. Medium
+  3. Large
+
+What size would you like? 2
+You chose Medium
+ 
+Your drink: Medium Pineapple, Passionfruit Redbull with Whipped Cream
+Would you like to add this to your order? (Y)es or (N)o? Y
+ 
+Item added to your order!
+Order for Derec: Medium Pineapple, Passionfruit Redbull with Whipped Cream
+   
+Would you like a (D)rink, a (S)nack, or to (C)omplete your order? S
+    
+Available Snacks:
+1. Bagel
+2. Chocolate Chip Cookie
+3. Curry Pocket
+4. Sugar Cookie
+5. Quesadilla
+6. Pizza
+   
+Please select a snack by number, or choose (B)ack or (Q)uit: 5
+You chose: Quesadilla
+Would you like to add Quesadilla to your order? (Y)es or (N)o? Y
+Order for Derec: Medium Pineapple, Passionfruit Redbull with Whipped Cream, Quesadilla
+   
+Would you like a (D)rink, a (S)nack, or to (C)omplete your order? C
+    
+Order for Derec Confimed! Your Reciept:
+Medium Pineapple, Passionfruit Redbull with Whipped Cream
+Quesadilla
+You Paid: $9.0
+Your Barista: Derec
+ 
+Welcome to the Bearcat Bistro, Derec!
+    
+1. Display Menu
+2. Take New Order
+3. View Open Orders
+4. Mark Order as Complete
+5. View End of Day Report
+6. Exit
+    
+Please select an option. 2
+ 
+What name would you like to use for your order? Joe
+ 
+Would you like a (D)rink or (S)nack? D
+    
+Bases
+  1. Drip
+  2. Espresso
+  3. Lemonade
+  4. Redbull
+  5. Tea
+
+Please select a base. 2
+You chose: Espresso
+ 
+Espresso Drinks
+  1. Americano
+  2. Latte
+  3. Mocha
+  4. White Mocha
+
+Which drink would you like? 2
+You chose Latte.
+  
+Temperatures
+  1. Iced
+  2. Hot
+
+Would you like that (I)ced or (H)ot? 2
+You chose Hot
+ 
+Milks
+  1. Almond
+  2. Coconut
+  3. Nonfat
+  4. Oat
+  5. Soy
+  6. Whole
+
+Which milk would you like? 4
+You chose Oat.
+    
+Savory Flavors
+  1. Chocolate
+  2. Caramel
+  3. Hazelnut
+  4. Pumpkin Spice
+  5. Vanilla
+  6. Irish Cream
+  7. White Chocolate
+
+Which flavor would you like? 4
+You chose Pumpkin Spice.
+   
+Would you like to add another flavor? N
+Add Ons
+  1. Cold Foam
+  2. Espresso Shot
+  3. Whipped Cream
+
+Would you like an Add On? Press N for None. 2
+You chose Espresso Shot.
+Would you like to add another Add On? N
+ 
+Sizes
+  1. Small
+  2. Medium
+  3. Large
+
+What size would you like? 3
+You chose Large
+ 
+Your drink: Large Hot Pumpkin Spice Latte with Oat Milk and Espresso Shot
+Would you like to add this to your order? (Y)es or (N)o? Y
+ 
+Item added to your order!
+Order for Joe: Large Hot Pumpkin Spice Latte with Oat Milk and Espresso Shot
+   
+Would you like a (D)rink, a (S)nack, or to (C)omplete your order? s
+    
+Available Snacks:
+1. Bagel
+2. Chocolate Chip Cookie
+3. Curry Pocket
+4. Sugar Cookie
+5. Quesadilla
+6. Pizza
+   
+Please select a snack by number, or choose (B)ack or (Q)uit: 1
+You chose: Bagel
+Would you like to add Bagel to your order? (Y)es or (N)o? Y
+Order for Joe: Large Hot Pumpkin Spice Latte with Oat Milk and Espresso Shot, Bagel
+   
+Would you like a (D)rink, a (S)nack, or to (C)omplete your order? C
+    
+Order for Joe Confimed! Your Reciept:
+Large Hot Pumpkin Spice Latte with Oat Milk and Espresso Shot
+Bagel
+You Paid: $13.75
+Your Barista: Derec
+ 
+Welcome to the Bearcat Bistro, Derec!
+    
+1. Display Menu
+2. Take New Order
+3. View Open Orders
+4. Mark Order as Complete
+5. View End of Day Report
+6. Exit
+    
+Please select an option. 3
+ 
+Order for Derec - $9.0
+Medium Pineapple, Passionfruit Redbull with Whipped Cream - $5.75
+Quesadilla - $3.25
+ 
+Order for Joe - $13.75
+Large Hot Pumpkin Spice Latte with Oat Milk and Espresso Shot - $11.0
+Bagel - $2.75
+ 
+Welcome to the Bearcat Bistro, Derec!
+    
+1. Display Menu
+2. Take New Order
+3. View Open Orders
+4. Mark Order as Complete
+5. View End of Day Report
+6. Exit
+    
+Please select an option. 4
+Order Up for Derec!
+Medium Pineapple, Passionfruit Redbull with Whipped Cream
+Quesadilla
+Welcome to the Bearcat Bistro, Derec!
+    
+1. Display Menu
+2. Take New Order
+3. View Open Orders
+4. Mark Order as Complete
+5. View End of Day Report
+6. Exit
+    
+Please select an option. 4
+Order Up for Joe!
+Large Hot Pumpkin Spice Latte with Oat Milk and Espresso Shot
+Bagel
+Welcome to the Bearcat Bistro, Derec!
+    
+1. Display Menu
+2. Take New Order
+3. View Open Orders
+4. Mark Order as Complete
+5. View End of Day Report
+6. Exit
+    
+Please select an option. 3
+ 
+There are no open orders.
+Welcome to the Bearcat Bistro, Derec!
+    
+1. Display Menu
+2. Take New Order
+3. View Open Orders
+4. Mark Order as Complete
+5. View End of Day Report
+6. Exit
+    
+Please select an option. 5
+ 
+Today's Sales
+ 
+Order for Derec - $9.0:
+Medium Pineapple, Passionfruit Redbull with Whipped Cream - $5.75
+Quesadilla - $3.25
+ 
+Order for Joe - $13.75:
+Large Hot Pumpkin Spice Latte with Oat Milk and Espresso Shot - $11.0
+Bagel - $2.75
+ 
+Account User: Derec
+ 
+Welcome to the Bearcat Bistro, Derec!
+    
+1. Display Menu
+2. Take New Order
+3. View Open Orders
+4. Mark Order as Complete
+5. View End of Day Report
+6. Exit
+    
+Please select an option. 6
+Exiting Bearcat Bistro.
