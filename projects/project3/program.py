@@ -165,6 +165,10 @@ class CustomerOrder:
 
         
     def add_to_order(self):
+        if self.newdrink.espressodrink == "White Mocha" and "White Chocolate" in self.newdrink.sflavors:
+            self.newdrink.sflavors.remove("White Chocolate")
+        if self.newdrink.espressodrink == "Mocha" and "Chocolate" in self.newdrink.sflavors:
+            self.newdrink.sflavors.remove("Chocolate")
         self.newdrink.display_drink()
         print(f"Your drink: {self.newdrink.drinkstr}")
         looping = True
