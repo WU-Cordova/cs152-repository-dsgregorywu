@@ -1,8 +1,7 @@
-import sys
 from datastructures.liststack import ListStack
-from datastructures.deque import Deque
-from projects.project3.program import BistroSystem
-from projects.project3.drinksandsnacks import Drink, Snack, Menu
+from projects.project3.program import Drink, Menu, Snack
+import sys
+
 
 class CustomerOrder:
     """A customer's order, including name, price, and each item ordered"""
@@ -14,12 +13,13 @@ class CustomerOrder:
         self.drinkscreens = ListStack(data_type=Menu)
 
     def order_items(self):
+        """Prompts the user to order either a drink or snack."""
         looping = True
         while looping:
             if self.items == []:
                 response = input("Would you like a (D)rink or (S)nack? ").strip().upper()
                 print("    ")
-            else: 
+            else:
                 response = input("Would you like a (D)rink, a (S)nack, or to (C)omplete your order? ").strip().upper()
                 print("    ")
             if response == "D":
@@ -31,6 +31,7 @@ class CustomerOrder:
             else: print("Invalid response. Please try again.")
 
     def order_snack(self):
+        """Allows the user to order a snack and add it to their order."""
         print("Available Snacks:")
         snack_list = list(self.bistro_system.snacks.keys())
         for index, snack in enumerate(snack_list, start=1):
@@ -78,6 +79,7 @@ class CustomerOrder:
                 print("Invalid selection. Please try again.")
 
     def complete_order(self):
+        """Completes a customer order and sends it to the Open Orders Deque."""
         print(f"Order for {self.name} Confimed! Your Reciept:")
         for item in self.items:
             self.bistro_system.reports[item] = item.cost
@@ -90,8 +92,13 @@ class CustomerOrder:
         self.bistro_system.orders.enqueue(self)
         self.bistro_system.homescreen()
 
-        
+
     def add_to_order(self):
+        """Prompts the user to add or remove their created drink from their order."""
+        if self.newdrink.espressodrink == "White Mocha" and "White Chocolate" in self.newdrink.sflavors:
+            self.newdrink.sflavors.remove("White Chocolate")
+        if self.newdrink.espressodrink == "Mocha" and "Chocolate" in self.newdrink.sflavors:
+            self.newdrink.sflavors.remove("Chocolate")
         self.newdrink.display_drink()
         print(f"Your drink: {self.newdrink.drinkstr}")
         looping = True
@@ -111,10 +118,12 @@ class CustomerOrder:
                 print("Invalid choice. Please try again.")
 
     def order_drink(self):
+        """Defines a drink."""
         self.newdrink = Drink(self.bistro_system)
         self.choose_base()
 
     def choose_base(self):
+        """Allows the user to select a base for their drink."""
         looping = True
         while looping:
             self.bistro_system.print_numbered_menu({"Bases": self.bistro_system.bases})
@@ -170,34 +179,46 @@ class CustomerOrder:
         self.add_to_order()
 
     def back(self):
+        """Allows the user to go "back" while in the drink building part of the menu."""
         if self.drinkscreens.empty:
             print("No previous menu to return to.")
             return
-        screen = self.drinkscreens.pop()
+        try:
+            screen = self.drinkscreens.pop()
+        except IndexError:
+            print("Error: Tried to pop from an empty stack.")
+            return
         if screen.menu_name == "Fruity Flavors":
             if self.newdrink.fflavors != []:
                 removed_item = self.newdrink.fflavors.pop()
                 print(f"Removing last fruity flavor choice: {removed_item}")
+                self.newdrink.cost -= .5
             self.choose_fflavors()
         elif screen.menu_name == "Savory Flavors":
             if self.newdrink.sflavors != []:
                 removed_item = self.newdrink.sflavors.pop()
                 print(f"Removing last savory flavor choice: {removed_item}")
+                self.newdrink.cost -= .5
             self.choose_sflavors()
         elif screen.menu_name == "Add Ons":
             if self.newdrink.addons != []:
                 removed_item = self.newdrink.addons.pop()
+                self.newdrink.cost -= float(self.bistro_system.addons[removed_item])
                 print(f"Removing last addon choice: {removed_item}")
             self.choose_addons()
         elif screen.menu_name == "Milks":
             if self.newdrink.milk:
+                removed_item = self.newdrink.milk
                 print(f"Removing milk choice: {self.newdrink.milk}")
                 self.newdrink.milk = ""
-                self.choose_milk()
+                self.newdrink.cost -= float(self.bistro_system.milk[removed_item])
+            self.choose_milk()
         elif screen.menu_name == "Espresso Drinks":
             if self.newdrink.espressodrink:
+                removed_item = self.newdrink.espressodrink
                 print(f"Removing Drink Choice {self.newdrink.espressodrink}")
                 self.newdrink.espressodrink = ""
+                self.newdrink.cost -= float(self.bistro_system.espressodrinks[removed_item])
                 self.choose_espresso()
         elif screen.menu_name == "Teas":
             if self.newdrink.teas:
@@ -206,21 +227,40 @@ class CustomerOrder:
                 self.choose_tea()
         elif screen.menu_name == "Non Coffee":
             if self.newdrink.noncoffee:
+                removed_item = self.newdrink.noncoffee
                 print(f"Removing Drink Choice {self.newdrink.noncoffee}")
                 self.newdrink.noncoffee = ""
+                self.newdrink.cost -= float(self.bistro_system.noncoffee[removed_item])
                 self.choose_noncoffee()
         elif screen.menu_name == "Bases":
             if self.newdrink.base:
+                removed_item = self.newdrink.base
                 print(f"Removing Base Choice {self.newdrink.base}")
                 self.newdrink.base = ""
+                self.newdrink.cost -= float(self.bistro_system.bases[removed_item])
                 self.choose_base()
         elif screen.menu_name == "Drip Options":
             if self.newdrink.dripdrink:
                 print(f"Removing Drink Choice {self.newdrink.dripdrink}")
+                self.newdrink.cost -= float(self.bistro_system.dripoptions[removed_item])
                 self.newdrink.dripdrink = ""
                 self.choose_drip()
+        elif screen.menu_name == "Temperatures":
+            if self.newdrink.temp:
+                print(f"Removing Temperature Choice {self.newdrink.temp}")
+                self.newdrink.temp = ""
+                self.choose_temp()
+        elif screen.menu_name == "Sizes":
+            if self.newdrink.size:
+                removed_item = self.newdrink.size
+                print(f"Removing Size Choice {self.newdrink.size}")
+                self.newdrink.cost -= float(self.bistro_system.sizes[removed_item])
+                self.newdrink.size = ""
+                self.choose_size()
+
 
     def choose_fflavors(self):
+        """Chooses fruity flavors for a drink."""
         looping = True
         while looping:
             self.bistro_system.print_numbered_menu({"Fruity Flavors": self.bistro_system.fflavors})
@@ -269,6 +309,7 @@ class CustomerOrder:
                 self.back()
 
     def choose_size(self):
+        """Allows the user to choose between Small, Medium, and Large size for their drink."""
         looping = True
         while looping:
             self.bistro_system.print_numbered_menu({"Sizes": self.bistro_system.sizes})
@@ -295,6 +336,7 @@ class CustomerOrder:
         self.drinkscreens.push(newscreen)
 
     def choose_temp(self):
+        """Allows users to choose if they want their drink hot or iced."""
         looping = True
         while looping:
             self.bistro_system.print_numbered_menu({"Temperatures": self.bistro_system.temperatures})
@@ -319,6 +361,7 @@ class CustomerOrder:
         self.drinkscreens.push(newscreen)
 
     def choose_sflavors(self):
+        """Allows users to choose savory flavors for their drink."""
         looping = True
         while looping:
             self.bistro_system.print_numbered_menu({"Savory Flavors": self.bistro_system.sflavors})
@@ -367,6 +410,7 @@ class CustomerOrder:
                 self.choose_sflavors()
 
     def choose_milk(self):
+        """Allows users to choose what type of milk they want in their drink."""
         looping = True
         while looping:
             self.bistro_system.print_numbered_menu({"Milks": self.bistro_system.milk})
@@ -391,6 +435,7 @@ class CustomerOrder:
         print("    ")
 
     def choose_addons(self):
+        """Allows users the option to include an Add On in their drink."""
         looping = True
         while looping:
             self.bistro_system.print_numbered_menu({"Add Ons": self.bistro_system.addons})
@@ -440,6 +485,7 @@ class CustomerOrder:
             print(" ")
 
     def choose_tea(self):
+        """Allows the user to choose which type of tea they would like."""
         looping = True
         while looping:
             self.bistro_system.print_numbered_menu({"Teas": self.bistro_system.teas})
@@ -463,6 +509,7 @@ class CustomerOrder:
         print("   ")
 
     def choose_espresso(self):
+        """Allows the user to choose which espresso drink they would like."""
         looping = True
         while looping:
             self.bistro_system.print_numbered_menu({"Espresso Drinks": self.bistro_system.espressodrinks})
@@ -491,6 +538,7 @@ class CustomerOrder:
         print("  ")
 
     def choose_drip(self):
+        """Allows users to choose which type of drip coffee they would like."""
         looping = True
         while looping:
             self.bistro_system.print_numbered_menu({"Drip Options": self.bistro_system.dripoptions})
@@ -516,6 +564,7 @@ class CustomerOrder:
 
 
     def choose_noncoffee(self):
+        """Allows users to choose which non-coffee option they want."""
         looping = True
         while looping:
             self.bistro_system.print_numbered_menu({"Non Coffee": self.bistro_system.noncoffee})
@@ -541,6 +590,7 @@ class CustomerOrder:
         print("  ")
 
     def add_item(self, item):
+        """Adds an item to a customer's order."""
         if not isinstance(item, (Snack, Drink)):
             raise TypeError("Item not of correct type.")
         self.items.append(item)

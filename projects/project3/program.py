@@ -1,9 +1,9 @@
-import sys
-from datastructures.liststack import ListStack
-from datastructures.deque import Deque
+import projects.project3.bistrosystem
+
 
 
 class Menu:
+    """Creates a Menu used for displaying bistro menus."""
     def __init__(self, menu_name, bistro_system):
         self.menu_name = menu_name
         self.bistro_system = bistro_system
@@ -15,6 +15,7 @@ class Menu:
 class Drink:
     """A Drink ordered from the Bearcat Bistro."""
     def __init__(self, bistro_system):
+        """Creates the attributes which the Drink class contains."""
         self.bistro_system = bistro_system
         self.name = ""
         self.size = ""
@@ -32,6 +33,7 @@ class Drink:
         self.temp = ""
 
     def display_drink(self):
+        """Gives a str representation of a chosen drink based on its properties"""
         self.drinkstr = self.size
         if self.temp and self.base != "Redbull" and self.base != "Lemonade" and self.base != "Tea":
             self.drinkstr += f" {self.temp}"
@@ -78,6 +80,6 @@ class Snack:
 
 
 if __name__ == '__main__':
-    game = BistroSystem()
+    game = projects.project3.bistrosystem.BistroSystem()
     game.useraccess()
     game.homescreen()
